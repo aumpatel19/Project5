@@ -1,0 +1,524 @@
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  :root {
+    --primary-color: #6366f1;
+    --secondary-color: #4f46e5;
+    --text-color: #333;
+    --bg-color: #f5f7fa;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --card-shadow: rgba(0, 0, 0, 0.1);
+    --card-shadow-hover: rgba(0, 0, 0, 0.15);
+    --transition-speed: 0.3s;
+    --border-radius: 12px;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    transition: background-color 0.5s ease;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  body.dark-mode {
+    --text-color: #e2e8f0;
+    --bg-color: #1a202c;
+    --card-bg: #2d3748;
+    --card-border: #4a5568;
+    --card-shadow: rgba(0, 0, 0, 0.3);
+    --card-shadow-hover: rgba(0, 0, 0, 0.4);
+  }
+  
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+  }
+  
+  .theme-toggle input {
+    display: none;
+  }
+  
+  .theme-toggle label {
+    cursor: pointer;
+    display: block;
+    width: 60px;
+    height: 30px;
+    background-color: #4a5568;
+    border-radius: 30px;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .theme-toggle label i {
+    position: absolute;
+    top: 5px;
+    transition: transform 0.3s ease;
+  }
+  
+  .theme-toggle label .fa-sun {
+    left: 6px;
+    color: #ffd700;
+    transform: translateX(0);
+  }
+  
+  .theme-toggle label .fa-moon {
+    right: 6px;
+    color: #f0f0f0;
+    transform: translateX(0);
+  }
+  
+  .theme-toggle input:checked + label .fa-sun {
+    transform: translateX(30px);
+  }
+  
+  .theme-toggle input:checked + label .fa-moon {
+    transform: translateX(-30px);
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+  }
+  
+  header h1 {
+    font-size: 2.8rem;
+    background: linear-gradient(90deg, #6366f1, #4f46e5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+    position: relative;
+    display: inline-block;
+  }
+  
+  header h1::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 4px;
+    background: linear-gradient(90deg, #6366f1, #4f46e5);
+    border-radius: 4px;
+  }
+  
+  .date-display {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin-top: 0.5rem;
+  }
+  
+  section {
+    margin-bottom: 2rem;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.8rem;
+    box-shadow: 0 4px 15px var(--card-shadow);
+    border: 1px solid var(--card-border);
+    transition: all var(--transition-speed) ease;
+  }
+  
+  section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--card-shadow-hover);
+  }
+  
+  section h2 {
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 1.4rem;
+  }
+  
+  .mood-question h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    background: linear-gradient(90deg, #6366f1, #4f46e5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .mood-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1.2rem;
+    justify-content: center;
+  }
+  
+  .mood-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius);
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .mood-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  }
+  
+  .mood-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: transparent;
+    transition: background-color var(--transition-speed) ease;
+  }
+  
+  .mood-card[data-mood="happy"]::before { background-color: #FFD700; }
+  .mood-card[data-mood="sad"]::before { background-color: #87CEEB; }
+  .mood-card[data-mood="excited"]::before { background-color: #FF7F50; }
+  .mood-card[data-mood="calm"]::before { background-color: #98FB98; }
+  .mood-card[data-mood="angry"]::before { background-color: #FF6347; }
+  .mood-card[data-mood="tired"]::before { background-color: #D8BFD8; }
+  
+  .mood-icon {
+    font-size: 3.5rem;
+    margin-bottom: 0.8rem;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .mood-card:hover .mood-icon {
+    transform: scale(1.3) rotate(5deg);
+  }
+  
+  .mood-label {
+    font-weight: 600;
+    text-transform: capitalize;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .mood-card.selected {
+    border: 2px solid var(--primary-color);
+    transform: scale(1.08);
+    box-shadow: 0 15px 30px rgba(99, 102, 241, 0.2);
+  }
+  
+  .mood-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    width: 25px;
+    height: 25px;
+    font-size: 0.9rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .current-mood {
+    text-align: center;
+  }
+  
+  .selected-mood-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .selected-mood-icon {
+    font-size: 4rem;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  
+  .mood-history ul {
+    list-style: none;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
+  
+  .mood-history li {
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.8rem;
+    background-color: var(--card-bg);
+    border-radius: 10px;
+    box-shadow: 0 3px 8px var(--card-shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  
+  .mood-history li:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px var(--card-shadow-hover);
+  }
+  
+  .history-date {
+    font-weight: 600;
+  }
+  
+  .history-mood {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .history-emoji {
+    font-size: 1.4rem;
+  }
+  
+  .history-label {
+    font-weight: 500;
+  }
+  
+  footer {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-width: 900px) {
+    .container {
+      padding: 1.5rem;
+    }
+    
+    header h1 {
+      font-size: 2.4rem;
+    }
+    
+    .mood-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      padding: 1.2rem;
+    }
+    
+    header h1 {
+      font-size: 2.2rem;
+    }
+    
+    header h1::after {
+      width: 100px;
+    }
+    
+    .mood-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    section {
+      padding: 1.5rem;
+    }
+    
+    .mood-icon {
+      font-size: 3.2rem;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .theme-toggle {
+      top: 15px;
+      right: 15px;
+    }
+    
+    .theme-toggle label {
+      width: 50px;
+      height: 25px;
+    }
+    
+    .theme-toggle label .fa-sun {
+      left: 5px;
+    }
+    
+    .theme-toggle label .fa-moon {
+      right: 5px;
+    }
+    
+    .theme-toggle input:checked + label .fa-sun {
+      transform: translateX(25px);
+    }
+    
+    .theme-toggle input:checked + label .fa-moon {
+      transform: translateX(-25px);
+    }
+    
+    header {
+      padding-top: 1.5rem;
+    }
+    
+    header h1 {
+      font-size: 2rem;
+    }
+    
+    header h1::after {
+      width: 90px;
+      height: 3px;
+    }
+    
+    .mood-question h2 {
+      font-size: 1.6rem;
+    }
+    
+    section {
+      padding: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1.2rem;
+    }
+    
+    .mood-card {
+      padding: 1.2rem 0.8rem;
+    }
+    
+    .mood-icon {
+      font-size: 3rem;
+    }
+    
+    .mood-label {
+      font-size: 1rem;
+    }
+    
+    .selected-mood-icon {
+      font-size: 3.5rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .container {
+      padding: 1rem;
+    }
+    
+    header h1 {
+      font-size: 1.8rem;
+    }
+    
+    header h1::after {
+      width: 80px;
+    }
+    
+    .mood-question h2 {
+      font-size: 1.4rem;
+    }
+    
+    .mood-grid {
+      gap: 0.8rem;
+    }
+    
+    .mood-card {
+      padding: 1rem 0.6rem;
+    }
+    
+    .mood-icon {
+      font-size: 2.8rem;
+      margin-bottom: 0.6rem;
+    }
+    
+    .mood-label {
+      font-size: 0.9rem;
+    }
+    
+    .selected-mood-icon {
+      font-size: 3rem;
+    }
+    
+    .mood-history li {
+      padding: 0.8rem 1rem;
+    }
+    
+    .history-emoji {
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 380px) {
+    .mood-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 0.7rem;
+    }
+    
+    .mood-card {
+      padding: 0.8rem 0.5rem;
+    }
+    
+    .mood-icon {
+      font-size: 2.5rem;
+    }
+    
+    header h1 {
+      font-size: 1.6rem;
+    }
+    
+    .container {
+      padding: 0.8rem;
+    }
+    
+    .mood-question h2 {
+      font-size: 1.3rem;
+    }
+    
+    section {
+      padding: 1rem;
+    }
+  }
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--card-bg);
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+  }
